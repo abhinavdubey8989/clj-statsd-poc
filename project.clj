@@ -5,7 +5,9 @@
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [compojure "1.6.2"]
                  [clj-statsd "0.4.0"]
-                 [ring/ring-defaults "1.9.5"]]
+                 [ring/ring-core "1.9.0"]
+                 [ring/ring-jetty-adapter "1.9.0"]
+                 [ring/ring-defaults "0.3.2"]]
   :plugins [[lein-ring "0.12.5"]]
   :ring {:handler clj-monitoring.handler/app
          :port 4550}

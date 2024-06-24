@@ -27,13 +27,25 @@
 
 (defroutes app-routes
   (GET "/ping" [] (response {:message "pong"}))
-  (GET "/user" [] (response cmh/user) )
+  (GET "/user" [] (response cmh/user))
   (route/not-found "Not Found"))
 
-(def app
-  (-> (wrap-defaults app-routes api-defaults)
-      wrap-json-response
-      wrap-json-body
-      ;; wrap-with-statsd
-      wrap-reload
-      ))
+
+(defn wrap-exception-handler [handler]
+  (fn [request]
+    (try
+      (handler request)
+      (catch Exception e
+        (println "Exception caught:" (.getMessage e))
+        (-> (response {:error "Internal Server Error"}))))))
+
+
+;; (def app
+;;   (-> (wrap-defaults app-routes api-defaults)
+;;       wrap-json-response
+;;       wrap-json-body
+;;       ;; wrap-with-statsd
+;;       wrap-reload
+;;       wrap-exception-handler))
+
+(def app app-routes)

@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  my_statsd:
+    image: statsd/statsd
+    container_name: my_statsd
+    tty: true
+    ports:
+      - "8125:8125/udp"
+    volumes:
+      - ./config/statsd/statsd_config.js:/usr/src/app/config.js:ro
+      - ./config/statsd/statsd_console.js:/usr/src/app/backends/console.js:ro
+
+  my_graphite:
+    image: graphiteapp/graphite-statsd
+    container_name: my_graphite
+    restart: always
+    ports:
+      - "8077:80"
+      - "2003-2004:2003-2004"
+      - "2023-2024:2023-2024"
+    volumes:
+      - ./volume_data/graphite:/opt/graphite/storage
+
+
+  my_grafana:
+    image: grafana/grafana:7.0.0
+    container_name: my_grafana
+    ports:
+      - "3200:3000" # ui
+    environment:
+        - GF_SECURITY_ADMIN_PASSWORD=password
+    volumes:
+      - ./volume_data/graphite:/var/lib/grafana
+

@@ -35,7 +35,7 @@ fi
 # Iterate using for loop
 for (( i=1; i<=$TIMES; i++ )); do
     call_api
-    echo " status : [$i]/[$TIMES]"
+    echo " done : [$i]/[$TIMES]"
     sleep 2
 done
 
